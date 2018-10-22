@@ -1,0 +1,80 @@
+# Prerequisites
+*.d
+
+# Object files
+*.o
+*.ko
+*.obj
+*.elf
+*.slo
+*.lo
+
+
+# Linker output
+*.ilk
+*.map
+*.exp
+
+# Precompiled Headers
+*.gch
+*.pch
+
+# Libraries
+*.lib
+*.a
+*.la
+*.lai
+
+# Shared objects (inc. Windows DLLs)
+*.dll
+*.so
+*.so.*
+*.dylib
+
+
+# Executables
+*.exe
+*.out
+*.app
+*.i*86
+*.x86_64
+*.hex
+*.app
+
+# Fortran module files
+*.mod
+*.smod
+
+# Debug files
+*.dSYM/
+*.su
+*.idb
+*.pdb
+
+# Kernel Module Compile Results
+*.mod*
+*.cmd
+.tmp_versions/
+
+
+modules.order
+Module.symvers
+Mkfile.old
+dkms.conf
+
+# Visual Studio ConfigFiles
+*.suo
+*.sdf
+*.opensdf
+/.vs
+
+# Compile Temp Files
+/Compile
+
+# Result Files
+/Bin
+/Lib
+
+# C# Temp Files
+/Project/DllTest_CS/bin
+/Project/DllTest_CS/obj

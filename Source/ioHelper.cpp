@@ -13,6 +13,7 @@ using namespace std;
 bool readAtrributeInfo(TopoMap& topoMap, const char* fileName)
 {
 	topoMap.m_currMaxUsedID = 0;
+	topoMap.m_originalMaxLineID = 0;
 	int id, aNodeID, bNodeID;
 	int type, dir, right;
 	float floorNo, grade, gridW;
@@ -51,6 +52,7 @@ bool readAtrributeInfo(TopoMap& topoMap, const char* fileName)
 		{
 				  pLine pNewLine = new Line(id, floorNo, grade, aNodeID, bNodeID, (Direction)dir);
 				  topoMap.m_lines.insert(pair<ID, pLine>(id, pNewLine));
+				  topoMap.m_originalMaxLineID = id > topoMap.m_originalMaxLineID ? id : topoMap.m_originalMaxLineID;
 				  break;
 		}
 

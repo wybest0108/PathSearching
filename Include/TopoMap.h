@@ -148,6 +148,7 @@ public:
 	map<ID, pLine> m_lines;						//线对象数组,包括由面对象抽象出来的线对象
 	map<ID, pArea> m_areas;						//面对象数组
 	ID m_currMaxUsedID;							//当前被使用到的最大ID号(点、线、面等所有元素的ID号不能重复)
+	ID m_originalMaxLineID;						//原始拓扑数据中线使用的最大ID号（不包括由面对象抽象出来的线对象）
 	multimap<ID, Road> m_allRoads;				//所有的单向道路，将用于A*算法中(以起点ID作为key)
 	ID m_maxUsedIDAfterPreprocess;				//对面对象进行预处理结束后使用到的最大ID
 	multimap<ID, Road> m_backupRoads;			//存储暂时从m_allRoads移除的Road对象

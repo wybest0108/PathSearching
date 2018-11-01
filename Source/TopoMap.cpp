@@ -533,8 +533,8 @@ bool TopoMap::_nearWhichLine(const CVector2& mapPt, const float floorNo, ID& lin
 	for (iter = m_lines.begin(); iter != m_lines.end(); ++iter)
 	{
 		pLine pCurrLine = iter->second;
-		//如果点和线不属于同一楼层，则继续查找下一条线
-		if (fabs(floorNo - pCurrLine->m_floorNo) > 0.001)	continue;
+		//如果点和线不属于同一楼层,或者线为面对象抽象出来的线，则继续查找下一条线
+		if (pCurrLine->m_id > m_originalMaxLineID || fabs(floorNo - pCurrLine->m_floorNo) > 0.001)	continue;
 
 		mapPtCV3.z = pCurrLine->m_points[0].z;
 		for (size_t i = 1; i < pCurrLine->m_points.size(); ++i)

@@ -1,7 +1,7 @@
 //*********************************************************************************************
-//×÷Õß:	Wei Ying
-//Íê³ÉÈÕÆÚ£º2018/9/30
-//±¸×¢£º±¾ÊÒÄÚµ¼º½Ëã·¨»ùÓÚA*Ëã·¨£¬Ëã·¨²Î¿¼À´Ô´£ºhttps://www.redblobgames.com/pathfinding/a-star/
+//ä½œè€…:	Wei Ying
+//å®Œæˆæ—¥æœŸï¼š2018/9/30
+//å¤‡æ³¨ï¼šæœ¬å®¤å†…å¯¼èˆªç®—æ³•åŸºäºA*ç®—æ³•ï¼Œç®—æ³•å‚è€ƒæ¥æºï¼šhttps://www.redblobgames.com/pathfinding/a-star/
 //*********************************************************************************************
 
 #include "TopoMap.h"
@@ -11,14 +11,14 @@
 #include <time.h>		//for test
 
 using namespace std;
-//Node¶ÔÏó´ø²Î¹¹Ôìº¯Êı
+//Nodeå¯¹è±¡å¸¦å‚æ„é€ å‡½æ•°
 Node::Node(ID id, float floorNo, float grade, const CVector3& cv3) : BaseElement(id, floorNo, grade)
 {
 	m_location = cv3;
 }
 
 
-//¼ÆËãLine¶ÔÏóµÄ×Ü³¤¶È
+//è®¡ç®—Lineå¯¹è±¡çš„æ€»é•¿åº¦
 void Line::calculateLineLength()
 {
 	m_totalLength = 0.0f;
@@ -29,10 +29,10 @@ void Line::calculateLineLength()
 }
 
 
-//ÅĞ¶ÏµãÊÇ·ñÔÚÇøÓòµÄµ¥¸ö¶à±ßĞÎÄÚ(Ëã·¨À´Ô´ÓÚ:http://angusj.com/delphi/clipper.php)
+//åˆ¤æ–­ç‚¹æ˜¯å¦åœ¨åŒºåŸŸçš„å•ä¸ªå¤šè¾¹å½¢å†…(ç®—æ³•æ¥æºäº:http://angusj.com/delphi/clipper.php)
 int Geometry::_isPointInPolygon(const CVector2& pt, const int startIndex, const int endIndex)
 {
-	//rusultÈ¡Öµ£º 0£º²»ÔÚ¶à±ßĞÎÄÚ£»1£ºÔÚ¶à±ßĞÎÄÚ£»-1£ºÔÚ¶à±ßĞÎ±ß½çÉÏ
+	//rusultå–å€¼ï¼š 0ï¼šä¸åœ¨å¤šè¾¹å½¢å†…ï¼›1ï¼šåœ¨å¤šè¾¹å½¢å†…ï¼›-1ï¼šåœ¨å¤šè¾¹å½¢è¾¹ç•Œä¸Š
 	int result = 0;
 	int count = endIndex - startIndex + 1;
 	if (count < 3)	return 0;
@@ -81,7 +81,7 @@ int Geometry::_isPointInPolygon(const CVector2& pt, const int startIndex, const 
 }
 
 
-//ÅĞ¶ÏµãÊÇ·ñÔÚÇøÓòÄÚ£¬·µ»ØÖµÎª 0£º ²»ÔÚÇøÓòÄÚ£» 1£º ÔÚÇøÓò¿ÉÍ¨ĞÔÇøÄÚ£» -1£ºÔÚÇøÓòµÄ²»¿ÉÍ¨ĞĞÇøÄÚ 
+//åˆ¤æ–­ç‚¹æ˜¯å¦åœ¨åŒºåŸŸå†…ï¼Œè¿”å›å€¼ä¸º 0ï¼š ä¸åœ¨åŒºåŸŸå†…ï¼› 1ï¼š åœ¨åŒºåŸŸå¯é€šæ€§åŒºå†…ï¼› -1ï¼šåœ¨åŒºåŸŸçš„ä¸å¯é€šè¡ŒåŒºå†… 
 int Geometry::isPointInsideGeometry(const CVector2& point)
 {
 	int count = 0;
@@ -91,15 +91,15 @@ int Geometry::isPointInsideGeometry(const CVector2& point)
 		int endPtIndex = (polyIndex == m_polygonCount - 1) ? m_pointCount - 1 : m_polygonStartIndex[polyIndex + 1] - 1;
 		int result = _isPointInPolygon(point, startPtIndex, endPtIndex);
 		if (1 == result)	++count;
-		//if (count >= 2)		break;	//Õâ¾ä´úÂë¼ÙÉèÒ»¸öÇøÓòÄÚÖ»´æÔÚ×î¶àÁ½¸ö¶à±ßĞÎÇ¶Ì×£¬²»¿¼ÂÇ´óÓÚÁ½¸ö¶à±ßĞÎÇ¶Ì×µÄ¸´ÔÓÇøÓò
+		//if (count >= 2)		break;	//è¿™å¥ä»£ç å‡è®¾ä¸€ä¸ªåŒºåŸŸå†…åªå­˜åœ¨æœ€å¤šä¸¤ä¸ªå¤šè¾¹å½¢åµŒå¥—ï¼Œä¸è€ƒè™‘å¤§äºä¸¤ä¸ªå¤šè¾¹å½¢åµŒå¥—çš„å¤æ‚åŒºåŸŸ
 	}
 
 	if (0 == count)	return 0;
-	return count & 1 ? 1 : -1;		//countÈç¹ûÊÇÆæÊı£¬ÔòÔÚÇøÓò¿ÉÍ¨ĞÔÇøÄÚ£»Èç¹ûÊÇÅ¼Êı£¬ÔòÔÚÇøÓòµÄ²»¿ÉÍ¨ĞĞÇøÄÚ 
+	return count & 1 ? 1 : -1;		//countå¦‚æœæ˜¯å¥‡æ•°ï¼Œåˆ™åœ¨åŒºåŸŸå¯é€šæ€§åŒºå†…ï¼›å¦‚æœæ˜¯å¶æ•°ï¼Œåˆ™åœ¨åŒºåŸŸçš„ä¸å¯é€šè¡ŒåŒºå†… 
 }
 
 
-//¼ÆËãÇøÓò°üÎ§ºĞ
+//è®¡ç®—åŒºåŸŸåŒ…å›´ç›’
 bool Geometry::calculateClipBox(CVector3& clipMin, CVector3& clipMax)
 {
 	if (m_pointCount <= 0)
@@ -126,17 +126,17 @@ bool Geometry::calculateClipBox(CVector3& clipMin, CVector3& clipMax)
 
 
 
-//¼ÆËãÇøÓò°üÎ§ºĞ
+//è®¡ç®—åŒºåŸŸåŒ…å›´ç›’
 bool Area::calculateClipBox()
 {
 	return m_geo.calculateClipBox(m_clipMin, m_clipMax);
 }
 
 
-//Õ¤¸ñ»¯ÇøÓò
+//æ …æ ¼åŒ–åŒºåŸŸ
 bool Area::createGrid()
 {
-	if (m_gridWidth < MINGRIDWIDTH)			//Íø¸ñÌ«Ğ¡£¬»áµ¼ÖÂÄÚ´æ¹ı´ó£¬ËùÒÔÒª×öÏŞÖÆ
+	if (m_gridWidth < MINGRIDWIDTH)			//ç½‘æ ¼å¤ªå°ï¼Œä¼šå¯¼è‡´å†…å­˜è¿‡å¤§ï¼Œæ‰€ä»¥è¦åšé™åˆ¶
 	{
 		return false;
 	}
@@ -144,10 +144,10 @@ bool Area::createGrid()
 	m_grid.m_width = (int)((m_clipMax.x - m_clipMin.x) / m_gridWidth) + 1;
 	m_grid.m_height = (int)((m_clipMax.y - m_clipMin.y) / m_gridWidth) + 1;
 	m_grid.m_gridSize = (m_grid.m_width + 7) / 8 * m_grid.m_height;
-	m_grid.m_passageInfo = new unsigned char[m_grid.m_gridSize];		//Ë¼¿¼£ºµ±Ç°µÄ·½Ê½ÓëÖ»´æ´¢²»¿ÉÍ¨ĞĞµÄÍø¸ñµãË÷Òı£¬ÄÄ¸ö¸ü½ÚÊ¡ÄÚ´æÄØ£¿
-	memset(m_grid.m_passageInfo, 0, m_grid.m_gridSize);					//³õÊ¼ÉèÎª¿ÉÍ¨ĞĞ
+	m_grid.m_passageInfo = new unsigned char[m_grid.m_gridSize];		//æ€è€ƒï¼šå½“å‰çš„æ–¹å¼ä¸åªå­˜å‚¨ä¸å¯é€šè¡Œçš„ç½‘æ ¼ç‚¹ç´¢å¼•ï¼Œå“ªä¸ªæ›´èŠ‚çœå†…å­˜å‘¢ï¼Ÿ
+	memset(m_grid.m_passageInfo, 0, m_grid.m_gridSize);					//åˆå§‹è®¾ä¸ºå¯é€šè¡Œ
 
-	//¼ÆËãÃ¿¸öµ¥Ôª¸ñÊÇ·ñ¿ÉÍ¨ĞĞ
+	//è®¡ç®—æ¯ä¸ªå•å…ƒæ ¼æ˜¯å¦å¯é€šè¡Œ
 	for (int i = 0; i < m_grid.m_width; ++i)
 	{
 		//cout << endl;			//test
@@ -159,9 +159,9 @@ bool Area::createGrid()
 			bool isInsideGeo = (1 == m_geo.isPointInsideGeometry(currMapPt));
 			if (isInsideGeo)
 			{
-				//Ã¿¸öµ¥Ôª¸ñµÄ¿ÉÍ¨ĞÔÓÃÒ»¸öÎ»´æ´¢£¬ÄÇÃ´Ã¿Ò»ĞĞµÄ°Ë¸öµ¥Ôª¸ñ¾Í×é³ÉÒ»¸ö×Ö½Ú
+				//æ¯ä¸ªå•å…ƒæ ¼çš„å¯é€šæ€§ç”¨ä¸€ä¸ªä½å­˜å‚¨ï¼Œé‚£ä¹ˆæ¯ä¸€è¡Œçš„å…«ä¸ªå•å…ƒæ ¼å°±ç»„æˆä¸€ä¸ªå­—èŠ‚
 				int sbit = i % 8;
-				int byteNumPerRow = (m_grid.m_width + 7) / 8;			//Ã¿ĞĞµÄ×Ö½ÚÊı
+				int byteNumPerRow = (m_grid.m_width + 7) / 8;			//æ¯è¡Œçš„å­—èŠ‚æ•°
 				unsigned char byteValue = 1;
 				byteValue = byteValue << sbit;
 				((unsigned char *)m_grid.m_passageInfo)[j * byteNumPerRow + i / 8] |= byteValue;
@@ -174,7 +174,7 @@ bool Area::createGrid()
 }
 
 
-//½«Õ¤¸ñµãÎ»×ø±ê×ª³ÉÊµ¼ÊÎ»ÖÃ×ø±ê
+//å°†æ …æ ¼ç‚¹ä½åæ ‡è½¬æˆå®é™…ä½ç½®åæ ‡
 bool Area::gridToMap(const GridLocation& gridPt, CVector2 &mapPt)
 {
 	if (gridPt.first >= m_grid.m_width || gridPt.second >= m_grid.m_height || gridPt.first < 0 || gridPt.second < 0)
@@ -182,14 +182,14 @@ bool Area::gridToMap(const GridLocation& gridPt, CVector2 &mapPt)
 		return false;
 	}
 
-	mapPt.x = m_clipMin.x + (gridPt.first + 0.5f) * m_gridWidth;		//ÕâÀïÈ¡µÄÊÇµ¥Ôª¸ñÖĞĞÄµã
-	mapPt.y = m_clipMin.y + (gridPt.second + 0.5f) * m_gridWidth;		//ÕâÀïÈ¡µÄÊÇµ¥Ôª¸ñÖĞĞÄµã
+	mapPt.x = m_clipMin.x + (gridPt.first + 0.5f) * m_gridWidth;		//è¿™é‡Œå–çš„æ˜¯å•å…ƒæ ¼ä¸­å¿ƒç‚¹
+	mapPt.y = m_clipMin.y + (gridPt.second + 0.5f) * m_gridWidth;		//è¿™é‡Œå–çš„æ˜¯å•å…ƒæ ¼ä¸­å¿ƒç‚¹
 
 	return true;
 }
 
 
-//Êµ¼ÊµãÎ»×ø±ê×ª»»³ÉÕ¤¸ñµãÎ»×ø±ê
+//å®é™…ç‚¹ä½åæ ‡è½¬æ¢æˆæ …æ ¼ç‚¹ä½åæ ‡
 bool Area::mapToGrid(const CVector2& mapPt, GridLocation& gridPt)
 {
 	if (mapPt.x < m_clipMin.x || mapPt.x > m_clipMax.x || mapPt.y < m_clipMin.y || mapPt.y > m_clipMax.y)
@@ -206,7 +206,7 @@ bool Area::mapToGrid(const CVector2& mapPt, GridLocation& gridPt)
 }
 
 
-//ÔÚµØÍ¼ÇøÓòÄÚ²éÕÒ´ÓÆğµãµ½ÖÕµãµÄÍ¨ĞĞÂ·¾¶,Ã»ÓĞÕÒµ½Ôò·µ»Øfalse,·ñÔò·µ»Øtrue
+//åœ¨åœ°å›¾åŒºåŸŸå†…æŸ¥æ‰¾ä»èµ·ç‚¹åˆ°ç»ˆç‚¹çš„é€šè¡Œè·¯å¾„,æ²¡æœ‰æ‰¾åˆ°åˆ™è¿”å›false,å¦åˆ™è¿”å›true
 bool Area::openSpaceSearchOnMap(const CVector3& startMapPt, const CVector3& destMapPt, vector<CVector3>& pathOnMap)
 {
 	if (startMapPt == destMapPt)	return false;
@@ -229,7 +229,7 @@ bool Area::openSpaceSearchOnMap(const CVector3& startMapPt, const CVector3& dest
 	}
 
 	float zCoordOfArea = m_geo.m_points[0].z;
-	//ÒòÎªopenSpaceSearchOnGridº¯ÊıÀï¿ÉÄÜ¶ÔÆğµãºÍÖÕµã×öÁËĞ©ÉÔÉÔµÄÆ«ÒÆ£¬ËùÒÔÏÂÃæĞèÒªÓÃÔ­Ê¼µÄÖµĞŞÕı»ØÀ´
+	//å› ä¸ºopenSpaceSearchOnGridå‡½æ•°é‡Œå¯èƒ½å¯¹èµ·ç‚¹å’Œç»ˆç‚¹åšäº†äº›ç¨ç¨çš„åç§»ï¼Œæ‰€ä»¥ä¸‹é¢éœ€è¦ç”¨åŸå§‹çš„å€¼ä¿®æ­£å›æ¥
 	pathOnMap.push_back(startMapPt);
 	for (size_t i = 1; i < pathOnGrid.size() - 1; ++i)
 	{
@@ -251,14 +251,14 @@ SquareGrid::~SquareGrid()
 }
 
 
-//ÅĞ¶ÏµãÊÇ·ñÔÚÍø¸ñÇøÓòÄÚ
+//åˆ¤æ–­ç‚¹æ˜¯å¦åœ¨ç½‘æ ¼åŒºåŸŸå†…
 bool SquareGrid::isInBounds(const GridLocation& gridPt)
 {
 	return gridPt.first >= 0 && gridPt.first < m_width && gridPt.second >= 0 && gridPt.second < m_height;
 }
 
 
-//·µ»Øµ¥Ôª¸ñÊÇ·ñ¿ÉÍ¨ĞĞ
+//è¿”å›å•å…ƒæ ¼æ˜¯å¦å¯é€šè¡Œ
 bool SquareGrid::isPassable(const GridLocation& gridPt)
 {
 	int sbit = gridPt.first % 8;
@@ -269,7 +269,7 @@ bool SquareGrid::isPassable(const GridLocation& gridPt)
 }
 
 
-//¿¿½ü±ß½çµÄ¿ÉÍ¨ĞĞµÄÊµ¼Êµã£¬Õ¤¸ñ»¯ºó£¬¿ÉÄÜ»á»®·Öµ½²»¿ÉÍ¨ĞĞµÄµ¥Ôª¸ñÉÏ£¬´ËÊ±ĞèÒªÑ°ÕÒÀëËü×î½üµÄ¿ÉÍ¨ĞÔµ¥Ôª¸ñÀ´´úÌæ
+//é è¿‘è¾¹ç•Œçš„å¯é€šè¡Œçš„å®é™…ç‚¹ï¼Œæ …æ ¼åŒ–åï¼Œå¯èƒ½ä¼šåˆ’åˆ†åˆ°ä¸å¯é€šè¡Œçš„å•å…ƒæ ¼ä¸Šï¼Œæ­¤æ—¶éœ€è¦å¯»æ‰¾ç¦»å®ƒæœ€è¿‘çš„å¯é€šæ€§å•å…ƒæ ¼æ¥ä»£æ›¿
 bool SquareGrid::_adjustGridLocation(GridLocation& gridPt)
 {
 	if (isPassable(gridPt))	return true;
@@ -280,7 +280,7 @@ bool SquareGrid::_adjustGridLocation(GridLocation& gridPt)
 	int prevRt = gridPt.first;
 	int prevDn = gridPt.second;
 	int prevUp = gridPt.second;
-	for (int radius = 1; radius < 8; ++radius)			//´Ë´¦8Îª×î´óÑ°ÕÒ°ë¾¶¡£ÎÊÌâ£ºÈ¡8ÄÜ±£Ö¤Ò»¶¨ÄÜ²éÕÒµ½Âğ£¿ÕâÖÖ·½·¨²éÕÒ³öÀ´µÄ²¢²»Ò»¶¨ÊÇ×î½üµÄ
+	for (int radius = 1; radius < 8; ++radius)			//æ­¤å¤„8ä¸ºæœ€å¤§å¯»æ‰¾åŠå¾„ã€‚é—®é¢˜ï¼šå–8èƒ½ä¿è¯ä¸€å®šèƒ½æŸ¥æ‰¾åˆ°å—ï¼Ÿè¿™ç§æ–¹æ³•æŸ¥æ‰¾å‡ºæ¥çš„å¹¶ä¸ä¸€å®šæ˜¯æœ€è¿‘çš„
 	{
 		boundLf = gridPt.first - radius;
 		boundRt = gridPt.first + radius;
@@ -315,11 +315,11 @@ bool SquareGrid::_adjustGridLocation(GridLocation& gridPt)
 }
 
 
-//²éÕÒÍø¸ñÇøÓòÄÚ´ÓÆğµãµ½ÖÕµãµÄÍ¨ĞĞÂ·¾¶
+//æŸ¥æ‰¾ç½‘æ ¼åŒºåŸŸå†…ä»èµ·ç‚¹åˆ°ç»ˆç‚¹çš„é€šè¡Œè·¯å¾„
 bool SquareGrid::openSpaceSearchOnGrid(GridLocation& start, GridLocation& dest, vector<GridLocation>& path)
 {
-	//ÆğµãºÍÖÕµã×ÜÊÇÔÚ±ß½çÉÏ£¬ËùÒÔÕ¤¸ñ»¯ºó£¬Æğµã»òÖÕµã¿ÉÄÜÎ»ÓÚ²»¿ÉÍ¨ĞĞµÄÍø¸ñÉÏ£¬´ËÊ±ĞèÒª¶ÔÆğµã»òÖÕµã×öĞ©ĞŞÕı£¬Ê¹ÆäËùÔÚµ¥Ôª¸ñ¿ÉÍ¨ĞĞ
-	//×ö·¨£ºÑ°ÕÒÓëÆğµã»òÖÕµã¾àÀë×î½üµÄ¿ÉÍ¨ĞÔµÄµ¥Ôª¸ñÀ´´úÌæ
+	//èµ·ç‚¹å’Œç»ˆç‚¹æ€»æ˜¯åœ¨è¾¹ç•Œä¸Šï¼Œæ‰€ä»¥æ …æ ¼åŒ–åï¼Œèµ·ç‚¹æˆ–ç»ˆç‚¹å¯èƒ½ä½äºä¸å¯é€šè¡Œçš„ç½‘æ ¼ä¸Šï¼Œæ­¤æ—¶éœ€è¦å¯¹èµ·ç‚¹æˆ–ç»ˆç‚¹åšäº›ä¿®æ­£ï¼Œä½¿å…¶æ‰€åœ¨å•å…ƒæ ¼å¯é€šè¡Œ
+	//åšæ³•ï¼šå¯»æ‰¾ä¸èµ·ç‚¹æˆ–ç»ˆç‚¹è·ç¦»æœ€è¿‘çš„å¯é€šæ€§çš„å•å…ƒæ ¼æ¥ä»£æ›¿
 	_adjustGridLocation(start);
 	_adjustGridLocation(dest);
 
@@ -342,7 +342,7 @@ bool SquareGrid::openSpaceSearchOnGrid(GridLocation& start, GridLocation& dest, 
 }
 
 
-//»ùÓÚÍø¸ñµÄA*ËÑË÷Ëã·¨
+//åŸºäºç½‘æ ¼çš„A*æœç´¢ç®—æ³•
 void SquareGrid::AStarSearchOnGrid(const GridLocation& start, const GridLocation& dest, map<GridLocation, GridLocation>& cameFrom, map<GridLocation, float>& costSoFar)
 {
 	PriorityQueue<GridLocation, float> frontier;
@@ -353,10 +353,10 @@ void SquareGrid::AStarSearchOnGrid(const GridLocation& start, const GridLocation
 
 	while (!frontier.empty())
 	{
-		//µ±ÓĞĞò¼¯²»Îª¿ÕµÄÊ±ºò£¬È¡ÓĞĞò¼¯µÚÒ»¸ö
+		//å½“æœ‰åºé›†ä¸ä¸ºç©ºçš„æ—¶å€™ï¼Œå–æœ‰åºé›†ç¬¬ä¸€ä¸ª
 		GridLocation current = frontier.get();
 
-		if (current == dest)	break;		//ÕÒµ½Ä¿±ê¾ÍÍ£Ö¹
+		if (current == dest)	break;		//æ‰¾åˆ°ç›®æ ‡å°±åœæ­¢
 
 		vector<GridLocation> nextSet;
 		getNeighbors(current, nextSet);
@@ -364,11 +364,11 @@ void SquareGrid::AStarSearchOnGrid(const GridLocation& start, const GridLocation
 		for (size_t i = 0; i < nextSet.size(); ++i)
 		{
 			GridLocation next = nextSet[i];
-			//ÁÚ¾ÓµãµÄcostµÈÓÚµ±Ç°µãµÄcost¼ÓÉÏÎ»ÒÆcost
+			//é‚»å±…ç‚¹çš„costç­‰äºå½“å‰ç‚¹çš„coståŠ ä¸Šä½ç§»cost
 			float newCost = costSoFar[current] + cost(current, next);
 			if (!costSoFar.count(next) || newCost < costSoFar[next])
 			{
-				//Èç¹ûnextµãµÄcost²¢²»´æÔÚ»òÕßĞÂµÃµ½µÄcostĞ¡ÓÚnextµÄcost,Ôò¸üĞÂnextµÄcost£¬½«nextºÍ¶ÔÓ¦µÄÀ´Ô´µã¼ÓÈëcameFromÖĞ£¬½«nextºÍfÖµ¼ÓÈëÓĞĞò¼¯frontierÖĞ
+				//å¦‚æœnextç‚¹çš„costå¹¶ä¸å­˜åœ¨æˆ–è€…æ–°å¾—åˆ°çš„costå°äºnextçš„cost,åˆ™æ›´æ–°nextçš„costï¼Œå°†nextå’Œå¯¹åº”çš„æ¥æºç‚¹åŠ å…¥cameFromä¸­ï¼Œå°†nextå’Œfå€¼åŠ å…¥æœ‰åºé›†frontierä¸­
 				costSoFar[next] = newCost;
 				frontier.put(next, heuristic(next, dest) + newCost);
 				cameFrom[next] = current;
@@ -378,7 +378,7 @@ void SquareGrid::AStarSearchOnGrid(const GridLocation& start, const GridLocation
 }
 
 
-//»ñÈ¡ÓëÄ¿±êµ¥Ôª¸ñÏàÁÚÇÒ¿ÉÍ¨ĞĞµÄµ¥Ôª¸ñ
+//è·å–ä¸ç›®æ ‡å•å…ƒæ ¼ç›¸é‚»ä¸”å¯é€šè¡Œçš„å•å…ƒæ ¼
 void SquareGrid::getNeighbors(const GridLocation& gridPt, vector<GridLocation>& neighbors)
 {
 	int x, y, dx, dy;
@@ -399,7 +399,7 @@ void SquareGrid::getNeighbors(const GridLocation& gridPt, vector<GridLocation>& 
 }
 
 
-//¶ÔÂ·¾¶½øĞĞÓÅ»¯´¦Àí£¬Ê¹Æä¸üÆ½»¬Ğ©£ºµ±Â·¾¶ÖĞÁ½µã¼äµÄÁ¬ÏßÃ»ÓĞÕÏ°­Ê±£¬Çå³ıÕâÁ½µã¼äËùÓĞµÄÖĞ¼äµã
+//å¯¹è·¯å¾„è¿›è¡Œä¼˜åŒ–å¤„ç†ï¼Œä½¿å…¶æ›´å¹³æ»‘äº›ï¼šå½“è·¯å¾„ä¸­ä¸¤ç‚¹é—´çš„è¿çº¿æ²¡æœ‰éšœç¢æ—¶ï¼Œæ¸…é™¤è¿™ä¸¤ç‚¹é—´æ‰€æœ‰çš„ä¸­é—´ç‚¹
 void SquareGrid::refinePath(vector<GridLocation>& path)
 {
 	if (path.size() <= 2)	return;
@@ -423,7 +423,7 @@ void SquareGrid::refinePath(vector<GridLocation>& path)
 				if (!isPassable(tempPt))
 				{
 					float distFromPt2Line = distFromPointToLine(firstPt, secondPt, tempPt);
-					if (distFromPt2Line <= 0.7071)			//ÕÏ°­µã¾àÀëµ±Ç°Ö±ÏßºÜ½ü
+					if (distFromPt2Line <= 0.7071)			//éšœç¢ç‚¹è·ç¦»å½“å‰ç›´çº¿å¾ˆè¿‘
 					{
 						isWayPassable = false;
 						break;
@@ -446,7 +446,7 @@ void SquareGrid::refinePath(vector<GridLocation>& path)
 }
 
 
-//Ô¤´¦ÀíÃæ¶ÔÏó£¬½«Ãæ¶ÔÏóÕ¤¸ñ»¯£¬²¢½«Ãæ¶ÔÏóµÄ½ø¿Ú»ò³ö¿Ú½øĞĞÁ½Á½Åä¶Ô£¬ĞÎ³ÉËùÓĞ¿ÉÄÜµÄÏßµÄ¼¯ºÏ
+//é¢„å¤„ç†é¢å¯¹è±¡ï¼Œå°†é¢å¯¹è±¡æ …æ ¼åŒ–ï¼Œå¹¶å°†é¢å¯¹è±¡çš„è¿›å£æˆ–å‡ºå£è¿›è¡Œä¸¤ä¸¤é…å¯¹ï¼Œå½¢æˆæ‰€æœ‰å¯èƒ½çš„çº¿çš„é›†åˆ
 void TopoMap::_preprocessAreas()
 {
 	map<ID, pArea>::iterator iterArea;
@@ -455,7 +455,7 @@ void TopoMap::_preprocessAreas()
 		pArea pCurrArea = iterArea->second;
 		vector<ID>* pAttachNodeIDs = &pCurrArea->m_attachNodeIDs;
 
-		pCurrArea->createGrid();				//Õ¤¸ñ»¯ÇøÓò
+		pCurrArea->createGrid();				//æ …æ ¼åŒ–åŒºåŸŸ
 
 		for (size_t i = 0; i < pAttachNodeIDs->size(); ++i)
 		{
@@ -481,10 +481,10 @@ void TopoMap::_preprocessAreas()
 }
 
 
-//¹¹ÔìµÀÂ·ÍØÆËÍø
+//æ„é€ é“è·¯æ‹“æ‰‘ç½‘
 void TopoMap::_constructRoadNetwork()
 {
-	//±éÀúËùÓĞÏß×´¶ÔÏó£¬½«Æä×ª±ä³ÉÓÃÓÚÂ·¾¶²éÕÒËã·¨ÖĞÊ¹ÓÃµÄµÀÂ·¶ÔÏó
+	//éå†æ‰€æœ‰çº¿çŠ¶å¯¹è±¡ï¼Œå°†å…¶è½¬å˜æˆç”¨äºè·¯å¾„æŸ¥æ‰¾ç®—æ³•ä¸­ä½¿ç”¨çš„é“è·¯å¯¹è±¡
 	map<ID, pLine>::iterator iterLine;
 	for (iterLine = m_lines.begin(); iterLine != m_lines.end(); ++iterLine)
 	{
@@ -494,15 +494,16 @@ void TopoMap::_constructRoadNetwork()
 }
 
 
-//ÕÒ³öÖ¸¶¨µãÔÚÄÄ¸öÇøÓòÄÚ, ·µ»ØÖµÎª 0£º ²»ÔÚÈÎºÎÇøÓòÄÚ£» 1£º ÔÚÄ³Ò»ÇøÓòÄÚ£» -1£ºÔÚÄ³Ò»ÇøÓòµÄÄÚ±ß½çÄÚ£¨¼´ÔÚÄ³Ò»ÇøÓòµÄ²»¿ÉÍ¨ĞĞÇøÓòÄÚ£© 
+//æ‰¾å‡ºæŒ‡å®šç‚¹åœ¨å“ªä¸ªåŒºåŸŸå†…, è¿”å›å€¼ä¸º 0ï¼š ä¸åœ¨ä»»ä½•åŒºåŸŸå†…ï¼› 1ï¼š åœ¨æŸä¸€åŒºåŸŸå†…ï¼› -1ï¼šåœ¨æŸä¸€åŒºåŸŸçš„å†…è¾¹ç•Œå†…ï¼ˆå³åœ¨æŸä¸€åŒºåŸŸçš„ä¸å¯é€šè¡ŒåŒºåŸŸå†…ï¼‰ 
 int TopoMap::_inWhichArea(const CVector2& mapPt, const float floorNo, ID& areaID)
 {
 	map<ID, pArea>::iterator iter;
+	int result = 0;
 	for (iter = m_areas.begin(); iter != m_areas.end(); ++iter)
 	{
 		pArea pCurrArea = iter->second;
 
-		//Èç¹ûµãºÍÇøÓò²»ÊôÓÚÍ¬Ò»Â¥²ã£¬Ôò¼ÌĞø²éÕÒÏÂ¸öÇøÓò
+		//å¦‚æœç‚¹å’ŒåŒºåŸŸä¸å±äºåŒä¸€æ¥¼å±‚ï¼Œåˆ™ç»§ç»­æŸ¥æ‰¾ä¸‹ä¸ªåŒºåŸŸ
 		if (fabs(floorNo - pCurrArea->m_floorNo) > 0.001)	continue;
 
 		int result = pCurrArea->m_geo.isPointInsideGeometry(mapPt);
@@ -514,32 +515,33 @@ int TopoMap::_inWhichArea(const CVector2& mapPt, const float floorNo, ID& areaID
 			areaID = pCurrArea->m_id;
 			return 1;
 		case -1:
-			return -1;
+			result = -1;
+			continue;
 		}
 	}
 
-	return 0;
+	return result;
 }
 
 
-//ÕÒ³öÖ¸¶¨µã¾àÀëÄÄÌõÏß×´µÀÂ·×î½ü
+//æ‰¾å‡ºæŒ‡å®šç‚¹è·ç¦»å“ªæ¡çº¿çŠ¶é“è·¯æœ€è¿‘
 bool TopoMap::_nearWhichLine(const CVector2& mapPt, const float floorNo, ID& lineID, CVector3& nearestPt, int& segmentNo, float& minDist)
 {
 	minDist = FLT_MAX;
-	CVector3 mapPtCV3 = CVector3(mapPt.x, mapPt.y, 0.0f);			//zÖµÔİÊ±ÉèÎª0
+	CVector3 mapPtCV3 = CVector3(mapPt.x, mapPt.y, 0.0f);			//zå€¼æš‚æ—¶è®¾ä¸º0
 	CVector3 tempPt;
 
 	map<ID, pLine>::iterator iter;
 	for (iter = m_lines.begin(); iter != m_lines.end(); ++iter)
 	{
 		pLine pCurrLine = iter->second;
-		//Èç¹ûµãºÍÏß²»ÊôÓÚÍ¬Ò»Â¥²ã,»òÕßÏßÎªÃæ¶ÔÏó³éÏó³öÀ´µÄÏß£¬Ôò¼ÌĞø²éÕÒÏÂÒ»ÌõÏß
+		//å¦‚æœç‚¹å’Œçº¿ä¸å±äºåŒä¸€æ¥¼å±‚,æˆ–è€…çº¿ä¸ºé¢å¯¹è±¡æŠ½è±¡å‡ºæ¥çš„çº¿ï¼Œåˆ™ç»§ç»­æŸ¥æ‰¾ä¸‹ä¸€æ¡çº¿
 		if (pCurrLine->m_id > m_originalMaxLineID || fabs(floorNo - pCurrLine->m_floorNo) > 0.001)	continue;
 
 		mapPtCV3.z = pCurrLine->m_points[0].z;
 		for (size_t i = 1; i < pCurrLine->m_points.size(); ++i)
 		{
-			//µãµ½Ïß¶ÎµÄ×î½üµãºÍ×î¶Ì¾àÀë¡£Èç¹û´¹×ãÔÚÏß¶ÎÉÏ£¬Ôò×î½üµãÎª´¹×ã£»Èç¹û´¹×ã²»ÔÚÏß¶ÎÉÏ£¬Ôò×î½üµãÎªÏß¶ÎÁ½¶ËµãÖĞÓëµã¾àÀë×î½üµÄµã
+			//ç‚¹åˆ°çº¿æ®µçš„æœ€è¿‘ç‚¹å’Œæœ€çŸ­è·ç¦»ã€‚å¦‚æœå‚è¶³åœ¨çº¿æ®µä¸Šï¼Œåˆ™æœ€è¿‘ç‚¹ä¸ºå‚è¶³ï¼›å¦‚æœå‚è¶³ä¸åœ¨çº¿æ®µä¸Šï¼Œåˆ™æœ€è¿‘ç‚¹ä¸ºçº¿æ®µä¸¤ç«¯ç‚¹ä¸­ä¸ç‚¹è·ç¦»æœ€è¿‘çš„ç‚¹
 			float dist;
 			int result = minDistFromPointToLineSegment(pCurrLine->m_points[i], pCurrLine->m_points[i - 1], mapPtCV3, tempPt, dist);
 			if (-1 == result)	continue;
@@ -562,25 +564,25 @@ float TopoMap::_heuristicForRoad(const ID startNodeID, const ID destNodeID)
 }
 
 
-//»ùÓÚÂ·ÍøµÄA*ËÑË÷Ëã·¨
+//åŸºäºè·¯ç½‘çš„A*æœç´¢ç®—æ³•
 void TopoMap::_AStarSearchOnRoadNetwork(const ID& startNodeID, const ID& destNodeID, map<ID, ID>& cameFrom, map<ID, float>& costSoFar)
 {
 	PriorityQueue<ID, float> frontier;
 	frontier.put(startNodeID, 0.0f);
-	//cameFrom´æ´¢¸¸×Ó½Úµã¹ØÏµµÄÁĞ±í£¬ÓÃÓÚ×·ËİÉú³ÉÂ·¾¶
+	//cameFromå­˜å‚¨çˆ¶å­èŠ‚ç‚¹å…³ç³»çš„åˆ—è¡¨ï¼Œç”¨äºè¿½æº¯ç”Ÿæˆè·¯å¾„
 	cameFrom[startNodeID] = startNodeID;
 	costSoFar[startNodeID] = 0.0f;
 
 	while (!frontier.empty())
 	{
-		//µ±ÓĞĞò¼¯²»Îª¿ÕµÄÊ±ºò£¬È¡ÓĞĞò¼¯µÚÒ»¸ö
+		//å½“æœ‰åºé›†ä¸ä¸ºç©ºçš„æ—¶å€™ï¼Œå–æœ‰åºé›†ç¬¬ä¸€ä¸ª
 		ID currentNodeID = frontier.get();
 		if (currentNodeID == destNodeID)
 		{
-			break;		//ÕÒµ½Ä¿±ê¾ÍÍ£Ö¹
+			break;		//æ‰¾åˆ°ç›®æ ‡å°±åœæ­¢
 		}
 
-		pair<multimap<ID, Road>::iterator, multimap<ID, Road>::iterator> ret = m_allRoads.equal_range(currentNodeID);		//ÕÒ³öËùÓĞÒÔcurrentÎªÆğµãµÄµÀÂ·
+		pair<multimap<ID, Road>::iterator, multimap<ID, Road>::iterator> ret = m_allRoads.equal_range(currentNodeID);		//æ‰¾å‡ºæ‰€æœ‰ä»¥currentä¸ºèµ·ç‚¹çš„é“è·¯
 		for (multimap<ID, Road>::iterator iter = ret.first; iter != ret.second; ++iter)
 		{
 			Road nextRoad = iter->second;
@@ -597,7 +599,7 @@ void TopoMap::_AStarSearchOnRoadNetwork(const ID& startNodeID, const ID& destNod
 }
 
 
-//½«µÀÂ·½ÚµãÂ·¾¶×ª»»³ÉµãÎ»×ø±êÂ·¾¶
+//å°†é“è·¯èŠ‚ç‚¹è·¯å¾„è½¬æ¢æˆç‚¹ä½åæ ‡è·¯å¾„
 void TopoMap::_roadPthToPointPath(const vector<ID>& roadPath)
 {
 	for (size_t i = 1, size = roadPath.size(); i < size; ++i)
@@ -635,7 +637,7 @@ void TopoMap::_roadPthToPointPath(const vector<ID>& roadPath)
 }
 
 
-//ÔÚÂ·ÍøÉÏ²éÕÒ´ÓÆğµãµ½ÖÕµãµÄÏßÂ·
+//åœ¨è·¯ç½‘ä¸ŠæŸ¥æ‰¾ä»èµ·ç‚¹åˆ°ç»ˆç‚¹çš„çº¿è·¯
 bool TopoMap::_pathSearchOnRoadNetwork(const ID& startNodeID, const ID& destNodeID)
 {
 	vector<ID> roadPath;
@@ -651,7 +653,7 @@ bool TopoMap::_pathSearchOnRoadNetwork(const ID& startNodeID, const ID& destNode
 }
 
 
-//½«Î»ÓÚÃæ×´ÇøÓòÄÚµÄÆğµã»òÕßÖÕµãÌí¼Óµ½µÀÂ·ÍØÆËÖĞ
+//å°†ä½äºé¢çŠ¶åŒºåŸŸå†…çš„èµ·ç‚¹æˆ–è€…ç»ˆç‚¹æ·»åŠ åˆ°é“è·¯æ‹“æ‰‘ä¸­
 ID TopoMap::_addAreaPointIntoTopo(const CVector2& mapPt, const ID areaID)
 {
 	pArea pTargetArea = m_areas[areaID];
@@ -668,7 +670,7 @@ ID TopoMap::_addAreaPointIntoTopo(const CVector2& mapPt, const ID areaID)
 	}
 
 	ID newNodeID = (++m_currMaxUsedID);
-	//Ìí¼Óµã
+	//æ·»åŠ ç‚¹
 	pNode pNewNode = new Node(newNodeID, pTargetArea->m_floorNo, pTargetArea->m_grade, mapPtV3);
 	m_nodes.insert(pair<ID, pNode>(newNodeID, pNewNode));
 
@@ -677,7 +679,7 @@ ID TopoMap::_addAreaPointIntoTopo(const CVector2& mapPt, const ID areaID)
 		ID currNodeID = pTargetArea->m_attachNodeIDs[i];
 		pNode currNode = m_nodes[currNodeID];
 
-		//Ìí¼ÓÏß		 
+		//æ·»åŠ çº¿		 
 		pLine pNewLine = new Line((++m_currMaxUsedID), pTargetArea->m_floorNo, pTargetArea->m_grade, newNodeID, currNodeID, BiDir);
 		if (!pTargetArea->openSpaceSearchOnMap(mapPtV3, currNode->m_location, pNewLine->m_points))
 		{
@@ -688,21 +690,21 @@ ID TopoMap::_addAreaPointIntoTopo(const CVector2& mapPt, const ID areaID)
 		pNewLine->calculateLineLength();
 		m_lines.insert(pair<ID, pLine>(pNewLine->m_id, pNewLine));
 
-		//Ìí¼ÓµÀÂ·
+		//æ·»åŠ é“è·¯
 		_addNewRoadIntoTopo(pNewLine, false);
 	}
 	return newNodeID;
 }
 
 
-//½«²»Î»ÓÚÈÎºÎÃæ×´ÇøÓòÄÚµÄÆğµã»òÕßÖÕµãÌí¼Óµ½µÀÂ·ÍØÆËÖĞ£¨½«¾àÀë×î½üµÄÏß´ò¶Ï³ÉÁ½ÌõÏß£©
+//å°†ä¸ä½äºä»»ä½•é¢çŠ¶åŒºåŸŸå†…çš„èµ·ç‚¹æˆ–è€…ç»ˆç‚¹æ·»åŠ åˆ°é“è·¯æ‹“æ‰‘ä¸­ï¼ˆå°†è·ç¦»æœ€è¿‘çš„çº¿æ‰“æ–­æˆä¸¤æ¡çº¿ï¼‰
 ID TopoMap::_addLinePointIntoTopo(const CVector3& mapPt, const ID lineID, const int segmentNo, const CVector3& nearestPt)
 {
 	pLine pTargetLine = m_lines[lineID];
 	ID mapPtID, nearestPtID;
 	bool isNearestNodeCreated = false;
-	bool bNeedToBreakInTwo = true;			//ÊÇ·ñĞèÒª·Ö³ÉÁ½¶Î
-	bool isMapPtIDEqualNearestPtID = (mapPt == nearestPt);	//mapPtºÍnearestPtÖØºÏ,½«Ê¹ÓÃÍ¬Ò»½ÚµãID
+	bool bNeedToBreakInTwo = true;			//æ˜¯å¦éœ€è¦åˆ†æˆä¸¤æ®µ
+	bool isMapPtIDEqualNearestPtID = (mapPt == nearestPt);	//mapPtå’ŒnearestPté‡åˆ,å°†ä½¿ç”¨åŒä¸€èŠ‚ç‚¹ID
 
 	nearestPtID = _addNewNodeOnLineIntoTopo(nearestPt, pTargetLine);
 	if (nearestPtID == pTargetLine->m_aNodeId || nearestPtID == pTargetLine->m_bNodeId)
@@ -720,32 +722,32 @@ ID TopoMap::_addLinePointIntoTopo(const CVector3& mapPt, const ID lineID, const 
 	}
 	else
 	{
-		//Ìí¼Óµã
+		//æ·»åŠ ç‚¹
 		mapPtID = (++m_currMaxUsedID);
 		pNode pNewNode = new Node(mapPtID, pTargetLine->m_floorNo, pTargetLine->m_grade, mapPt);
 		m_nodes.insert(pair<ID, pNode>(mapPtID, pNewNode));
 
-		//Ìí¼ÓÏß
+		//æ·»åŠ çº¿
 		pLine pNewLine = new Line((++m_currMaxUsedID), pTargetLine->m_floorNo, pTargetLine->m_grade, mapPtID, nearestPtID, BiDir);
 		pNewLine->m_points.push_back(mapPt);
 		pNewLine->m_points.push_back(nearestPt);
 		pNewLine->calculateLineLength();
 		m_lines.insert(pair<ID, pLine>(pNewLine->m_id, pNewLine));
 
-		//Ìí¼ÓµÀÂ·
+		//æ·»åŠ é“è·¯
 		_addNewRoadIntoTopo(pNewLine, false);
 	}
 
 	if (!bNeedToBreakInTwo)	return mapPtID;
 
-	//½«Ô­ÏÈµÄÏß·Ö³ÉÁ½Ìõ
+	//å°†åŸå…ˆçš„çº¿åˆ†æˆä¸¤æ¡
 	_breakLineIntoTwoParts(pTargetLine, segmentNo, nearestPtID, nearestPt);
 
 	return mapPtID;
 }
 
 
-//½«Ïß´ò¶Ï³ÉÁ½ÌõÏß
+//å°†çº¿æ‰“æ–­æˆä¸¤æ¡çº¿
 void TopoMap::_breakLineIntoTwoParts(const pLine& pTargetLine, const int segmentNo, const ID seperatePtID, const CVector3& seperatePt)
 {
 	ID linePart1ID = (++m_currMaxUsedID);
@@ -769,19 +771,19 @@ void TopoMap::_breakLineIntoTwoParts(const pLine& pTargetLine, const int segment
 		pLinePart2->m_points.push_back(pTargetLine->m_points[i]);
 	}
 	pLinePart2->calculateLineLength();
-	//Ìí¼ÓÏß
+	//æ·»åŠ çº¿
 	m_lines.insert(pair<ID, pLine>(linePart1ID, pLinePart1));
 	m_lines.insert(pair<ID, pLine>(linePart2ID, pLinePart2));
-	//Ìí¼ÓµÀÂ·
+	//æ·»åŠ é“è·¯
 	_addNewRoadIntoTopo(pLinePart1, false);
 	_addNewRoadIntoTopo(pLinePart2, false);
-	//°ÑÔ­ÏÈÏß¶ÔÓ¦µÄroads´Óm_allRoadsÖĞÒÆ³ı²¢±¸·İ
+	//æŠŠåŸå…ˆçº¿å¯¹åº”çš„roadsä»m_allRoadsä¸­ç§»é™¤å¹¶å¤‡ä»½
 	_removeAndBackupRoads(pTargetLine);
 }
 
 
 
-//µ±ÆğµãºÍÖÕµãÔÚÍ¬Ò»ÏßÉÏÊ±£¬¹¹Ôì´ÓÆğµãµ½ÖÕµãµÄÂ·¾¶
+//å½“èµ·ç‚¹å’Œç»ˆç‚¹åœ¨åŒä¸€çº¿ä¸Šæ—¶ï¼Œæ„é€ ä»èµ·ç‚¹åˆ°ç»ˆç‚¹çš„è·¯å¾„
 bool TopoMap::_constructPathOnSameLine(const pLine& pTargetLine, const int segmentNoForStartPt, const int segmentNoForDestPt, const vector<CVector3>& ptsInfo)
 {
 	CVector3 startMapPt = ptsInfo[0];
@@ -799,7 +801,7 @@ bool TopoMap::_constructPathOnSameLine(const pLine& pTargetLine, const int segme
 	{
 		float dist1 = distBetweenTwoPoints(nearestPtForStartPt, pTargetLine->m_points[segmentNoForStartPt - 1]);
 		float dist2 = distBetweenTwoPoints(nearestPtForDestPt, pTargetLine->m_points[segmentNoForStartPt - 1]);
-		//µ±dist1µÈÓÚdist2Ê±
+		//å½“dist1ç­‰äºdist2æ—¶
 		if (fabs(dist1 - dist2) < PRECISION)
 		{
 			if (destMapPt != nearestPtForDestPt)
@@ -820,7 +822,7 @@ bool TopoMap::_constructPathOnSameLine(const pLine& pTargetLine, const int segme
 		}
 	}
 
-	if (segmentNoForStartPt < segmentNoForDestPt && (BiDir == pTargetLine->m_dir || PosDir == pTargetLine->m_dir))		//´ËÊ±µ±Ç°ÏßÂ·±ØĞëÊÇË«Ïò»òÕßÕıÏò£¬²ÅÄÜÑØ×Åµ±Ç°ÏßÂ·´ÓÆğµãµ½´ïÖÕµã
+	if (segmentNoForStartPt < segmentNoForDestPt && (BiDir == pTargetLine->m_dir || PosDir == pTargetLine->m_dir))		//æ­¤æ—¶å½“å‰çº¿è·¯å¿…é¡»æ˜¯åŒå‘æˆ–è€…æ­£å‘ï¼Œæ‰èƒ½æ²¿ç€å½“å‰çº¿è·¯ä»èµ·ç‚¹åˆ°è¾¾ç»ˆç‚¹
 	{
 		if (nearestPtForStartPt != pTargetLine->m_points[segmentNoForStartPt])
 		{
@@ -844,7 +846,7 @@ bool TopoMap::_constructPathOnSameLine(const pLine& pTargetLine, const int segme
 		return true;
 	}
 
-	if (segmentNoForStartPt > segmentNoForDestPt && (BiDir == pTargetLine->m_dir || NegDir == pTargetLine->m_dir))		//´ËÊ±µ±Ç°ÏßÂ·±ØĞëÊÇË«Ïò»òÕß·´Ïò£¬²ÅÄÜÑØ×Åµ±Ç°ÏßÂ·´ÓÆğµãµ½´ïÖÕµã
+	if (segmentNoForStartPt > segmentNoForDestPt && (BiDir == pTargetLine->m_dir || NegDir == pTargetLine->m_dir))		//æ­¤æ—¶å½“å‰çº¿è·¯å¿…é¡»æ˜¯åŒå‘æˆ–è€…åå‘ï¼Œæ‰èƒ½æ²¿ç€å½“å‰çº¿è·¯ä»èµ·ç‚¹åˆ°è¾¾ç»ˆç‚¹
 	{
 		if (nearestPtForStartPt != pTargetLine->m_points[segmentNoForStartPt - 1])
 		{
@@ -868,7 +870,7 @@ bool TopoMap::_constructPathOnSameLine(const pLine& pTargetLine, const int segme
 		return true;
 	}
 
-	//µ¥ĞĞµÀ£¬²»¿ÉÖ±½ÓÑØ×ÅÏß´ÓÆğµãÄæĞĞµ½ÖÕµã,Ö»ÄÜ½«ÆğµãºÍÖÕµã¼ÓÈëÂ·ÍøÖĞ£¬Ñ°ÕÒÆäËû¿ÉÍ¨ĞĞµÄÏßÂ·
+	//å•è¡Œé“ï¼Œä¸å¯ç›´æ¥æ²¿ç€çº¿ä»èµ·ç‚¹é€†è¡Œåˆ°ç»ˆç‚¹,åªèƒ½å°†èµ·ç‚¹å’Œç»ˆç‚¹åŠ å…¥è·¯ç½‘ä¸­ï¼Œå¯»æ‰¾å…¶ä»–å¯é€šè¡Œçš„çº¿è·¯
 	ID startNodeID, destNodeID;
 	m_pathOnMap.clear();
 	_insertTwoPointsToLine(pTargetLine, ptsInfo, segmentNoForStartPt, segmentNoForDestPt, startNodeID, destNodeID);
@@ -876,7 +878,7 @@ bool TopoMap::_constructPathOnSameLine(const pLine& pTargetLine, const int segme
 }
 
 
-//ÔÚÏßÉÏ²åÈëÁ½¸öµã
+//åœ¨çº¿ä¸Šæ’å…¥ä¸¤ä¸ªç‚¹
 void TopoMap::_insertTwoPointsToLine(const pLine& pTargetLine, const vector<CVector3>& ptsInfo, const int segmentNoForStartPt, const int segmentNoForDestPt, ID& startNodeID, ID& destNodeID)
 {
 	CVector3 startMapPt = ptsInfo[0];
@@ -888,7 +890,7 @@ void TopoMap::_insertTwoPointsToLine(const pLine& pTargetLine, const vector<CVec
 	bool isDestIDEqualNearstPtID = (destMapPt == nearestPtForDestPt);
 	bool isNearestNodeForStartCreated = false;
 	bool isNearestNodeForDestCreated = false;
-	int partCount = 3;			//ĞèÒª°ÑÏß·Ö¸î³É¼¸¶Î
+	int partCount = 3;			//éœ€è¦æŠŠçº¿åˆ†å‰²æˆå‡ æ®µ
 
 	nearestPtForStartID = _addNewNodeOnLineIntoTopo(nearestPtForStartPt, pTargetLine);
 	if (nearestPtForStartID == pTargetLine->m_aNodeId || nearestPtForStartID == pTargetLine->m_bNodeId)
@@ -920,17 +922,17 @@ void TopoMap::_insertTwoPointsToLine(const pLine& pTargetLine, const vector<CVec
 	}
 	else
 	{
-		//Ìí¼Óµã
+		//æ·»åŠ ç‚¹
 		startNodeID = (++m_currMaxUsedID);
 		pNode pNewNode = new Node(startNodeID, pTargetLine->m_floorNo, pTargetLine->m_grade, startMapPt);
 		m_nodes.insert(pair<ID, pNode>(startNodeID, pNewNode));
-		//Ìí¼ÓÏß
+		//æ·»åŠ çº¿
 		pLine pNewLine = new Line((++m_currMaxUsedID), pTargetLine->m_floorNo, pTargetLine->m_grade, startNodeID, nearestPtForStartID, BiDir);
 		pNewLine->m_points.push_back(startMapPt);
 		pNewLine->m_points.push_back(nearestPtForStartPt);
 		pNewLine->calculateLineLength();
 		m_lines.insert(pair<ID, pLine>(pNewLine->m_id, pNewLine));
-		//Ìí¼ÓµÀÂ·
+		//æ·»åŠ é“è·¯
 		_addNewRoadIntoTopo(pNewLine, false);
 	}
 
@@ -940,17 +942,17 @@ void TopoMap::_insertTwoPointsToLine(const pLine& pTargetLine, const vector<CVec
 	}
 	else
 	{
-		//Ìí¼Óµã
+		//æ·»åŠ ç‚¹
 		destNodeID = (++m_currMaxUsedID);
 		pNode pNewNode = new Node(destNodeID, pTargetLine->m_floorNo, pTargetLine->m_grade, destMapPt);
 		m_nodes.insert(pair<ID, pNode>(destNodeID, pNewNode));
-		//Ìí¼ÓÏß
+		//æ·»åŠ çº¿
 		pLine pNewLine = new Line((++m_currMaxUsedID), pTargetLine->m_floorNo, pTargetLine->m_grade, destNodeID, nearestPtForDestID, BiDir);
 		pNewLine->m_points.push_back(destMapPt);
 		pNewLine->m_points.push_back(nearestPtForDestPt);
 		pNewLine->calculateLineLength();
 		m_lines.insert(pair<ID, pLine>(pNewLine->m_id, pNewLine));
-		//Ìí¼ÓµÀÂ·
+		//æ·»åŠ é“è·¯
 		_addNewRoadIntoTopo(pNewLine, false);
 	}
 	if (3 != partCount)	return;
@@ -1002,25 +1004,25 @@ void TopoMap::_breakLineIntoThreeParts(const pLine& pTargetLine, const ID startN
 	{
 		pLinePart3->m_points.push_back(pTargetLine->m_points[i]);
 	}
-	//Ìí¼ÓÏß
+	//æ·»åŠ çº¿
 	pLinePart1->calculateLineLength();
 	pLinePart2->calculateLineLength();
 	pLinePart3->calculateLineLength();
 	m_lines.insert(pair<ID, pLine>(pLinePart1->m_id, pLinePart1));
 	m_lines.insert(pair<ID, pLine>(pLinePart2->m_id, pLinePart2));
 	m_lines.insert(pair<ID, pLine>(pLinePart3->m_id, pLinePart3));
-	//Ìí¼ÓµÀÂ·
+	//æ·»åŠ é“è·¯
 	_addNewRoadIntoTopo(pLinePart1, false);
 	_addNewRoadIntoTopo(pLinePart2, false);
 	_addNewRoadIntoTopo(pLinePart3, false);
-	//°ÑÔ­ÏÈÏß¶ÔÓ¦µÄroads´Óm_allRoadsÖĞÒÆ³ı²¢±¸·İ
+	//æŠŠåŸå…ˆçº¿å¯¹åº”çš„roadsä»m_allRoadsä¸­ç§»é™¤å¹¶å¤‡ä»½
 	_removeAndBackupRoads(pTargetLine);
 }
 
 
 void TopoMap::_restoreTopoMap()
 {
-	//É¾³ıÎªËã·¨ĞÂÔö¼ÓµÄµã
+	//åˆ é™¤ä¸ºç®—æ³•æ–°å¢åŠ çš„ç‚¹
 	map<ID, pNode>::iterator iterNode;
 	for (iterNode = m_nodes.begin(); iterNode != m_nodes.end();)
 	{
@@ -1035,7 +1037,7 @@ void TopoMap::_restoreTopoMap()
 		++iterNode;
 	}
 
-	//É¾³ıÎªËã·¨ĞÂÔöµÄÏß
+	//åˆ é™¤ä¸ºç®—æ³•æ–°å¢çš„çº¿
 	map<ID, pLine>::iterator iterLine;
 	for (iterLine = m_lines.begin(); iterLine != m_lines.end();)
 	{
@@ -1050,7 +1052,7 @@ void TopoMap::_restoreTopoMap()
 		++iterLine;
 	}
 
-	//É¾³ıÎªËã·¨ĞÂÔöµÄroad
+	//åˆ é™¤ä¸ºç®—æ³•æ–°å¢çš„road
 	multimap<ID, Road>::iterator iterRoad;
 	for (iterRoad = m_allRoads.begin(); iterRoad != m_allRoads.end();)
 	{
@@ -1062,7 +1064,7 @@ void TopoMap::_restoreTopoMap()
 		++iterRoad;
 	}
 
-	//½«Ö®Ç°ÒÆ³ıµÄroad¶ÔÏóÖØĞÂÌí¼Ó»ØÈ¥
+	//å°†ä¹‹å‰ç§»é™¤çš„roadå¯¹è±¡é‡æ–°æ·»åŠ å›å»
 	for (iterRoad = m_backupRoads.begin(); iterRoad != m_backupRoads.end(); ++iterRoad)
 	{
 		m_allRoads.insert(pair<ID, Road>(iterRoad->first, iterRoad->second));
@@ -1074,7 +1076,7 @@ void TopoMap::_restoreTopoMap()
 }
 
 
-//³õÊ¼»¯
+//åˆå§‹åŒ–
 void TopoMap::initTopoMap()
 {
 	clock_t startTime1, finishTime1;			//test
@@ -1088,15 +1090,15 @@ void TopoMap::initTopoMap()
 	cout << "constructing road network completed!" << endl;
 
 	finishTime1 = clock();				//test
-	cout << "³õÊ¼»¯¹²ºÄÊ±£º" << ((double)(finishTime1 - startTime1) / CLOCKS_PER_SEC) << "Ãë£¡\n" << endl;			//test
+	cout << "åˆå§‹åŒ–å…±è€—æ—¶ï¼š" << ((double)(finishTime1 - startTime1) / CLOCKS_PER_SEC) << "ç§’ï¼\n" << endl;			//test
 }
 
 
-//²éµ½µØÍ¼ÉÏÁ¬½ÓÆğµãºÍÖÕµãµÄÂ·Ïß
+//æŸ¥åˆ°åœ°å›¾ä¸Šè¿æ¥èµ·ç‚¹å’Œç»ˆç‚¹çš„è·¯çº¿
 bool TopoMap::searchPath(const CVector2& startMapPt, const float startFloorNo, const CVector2& destMapPt, const float destFloorNo)
 {
 	cout << "Searching path is in process..." << endl;
-	if (startMapPt == destMapPt && startFloorNo == destFloorNo)	return false;		//Èç¹ûÆğµãºÍÖÕµãÊÇÍ¬Ò»¸öµã£¬ÔòÖ±½ÓÍË³ö
+	if (startMapPt == destMapPt && startFloorNo == destFloorNo)	return false;		//å¦‚æœèµ·ç‚¹å’Œç»ˆç‚¹æ˜¯åŒä¸€ä¸ªç‚¹ï¼Œåˆ™ç›´æ¥é€€å‡º
 
 	ID areaIDForStartPt, areaIDForDestPt;
 	ID lineIDForStartPt, lineIDForDestPt;
@@ -1111,18 +1113,18 @@ bool TopoMap::searchPath(const CVector2& startMapPt, const float startFloorNo, c
 	result1 = _inWhichArea(startMapPt, startFloorNo, areaIDForStartPt);
 	if (-1 == result1)
 	{
-		cout << "ÆğµãÎ»ÓÚ²»¿ÉÍ¨ĞĞÇøÓòÄÚ" << endl;
+		cout << "èµ·ç‚¹ä½äºä¸å¯é€šè¡ŒåŒºåŸŸå†…" << endl;
 		return false;
 	}
 
 	result2 = _inWhichArea(destMapPt, destFloorNo, areaIDForDestPt);
 	if (-1 == result2)
 	{
-		cout << "ÖÕµãÎ»ÓÚ²»¿ÉÍ¨ĞĞÇøÓòÄÚ" << endl;
+		cout << "ç»ˆç‚¹ä½äºä¸å¯é€šè¡ŒåŒºåŸŸå†…" << endl;
 		return false;
 	}
 
-	//ÆğµãºÍÖÕµãÔÚÍ¬Ò»ÇøÓò£¨Ãæ×´Â·Íø£©ÄÚ
+	//èµ·ç‚¹å’Œç»ˆç‚¹åœ¨åŒä¸€åŒºåŸŸï¼ˆé¢çŠ¶è·¯ç½‘ï¼‰å†…
 	if (1 == result1 && 1 == result2 && areaIDForStartPt == areaIDForDestPt)
 	{
 		pArea pTargetArea = m_areas[areaIDForStartPt];
@@ -1133,15 +1135,15 @@ bool TopoMap::searchPath(const CVector2& startMapPt, const float startFloorNo, c
 	switch (result1)
 	{
 	case 0:
-		//Æğµã²»ÔÚÈÎºÎÇøÓòÄÚ£¬ÔòÕÒÓëµã¾àÀë×î½üµÄÏß
+		//èµ·ç‚¹ä¸åœ¨ä»»ä½•åŒºåŸŸå†…ï¼Œåˆ™æ‰¾ä¸ç‚¹è·ç¦»æœ€è¿‘çš„çº¿
 		if (!_nearWhichLine(startMapPt, startFloorNo, lineIDForStartPt, nearestPtForStartPt, segmentNoForStartPt, distForStartPt))
 		{
-			cout << "Æğµã²»¿¿½üÈÎºÎÏß" << endl;
+			cout << "èµ·ç‚¹ä¸é è¿‘ä»»ä½•çº¿" << endl;
 			return false;
 		}
 		break;
 	case 1:
-		//½«ÆğµãÓëËùÔÚÇøÓòµÄ³öÈë¿ÚÁ½Á½ÏàÁ¬£¬²¢½«ĞÎ³ÉµÄĞÂµÄÏßÂ·²¢ÈëÂ·ÍøÖĞ£¨×¢Òâ±¸·İ£¬ÒÔ±ãºóĞø²éÕÒ»¹Ô­Ô­Ê¼Â·Íø£©
+		//å°†èµ·ç‚¹ä¸æ‰€åœ¨åŒºåŸŸçš„å‡ºå…¥å£ä¸¤ä¸¤ç›¸è¿ï¼Œå¹¶å°†å½¢æˆçš„æ–°çš„çº¿è·¯å¹¶å…¥è·¯ç½‘ä¸­ï¼ˆæ³¨æ„å¤‡ä»½ï¼Œä»¥ä¾¿åç»­æŸ¥æ‰¾è¿˜åŸåŸå§‹è·¯ç½‘ï¼‰
 		startNodeID = _addAreaPointIntoTopo(startMapPt, areaIDForStartPt);
 		break;
 	}
@@ -1149,20 +1151,20 @@ bool TopoMap::searchPath(const CVector2& startMapPt, const float startFloorNo, c
 	switch (result2)
 	{
 	case 0:
-		//ÖÕµã²»ÔÚÈÎºÎÇøÓòÄÚ£¬ÔòÕÒÓëµã¾àÀë×î½üµÄÏß
+		//ç»ˆç‚¹ä¸åœ¨ä»»ä½•åŒºåŸŸå†…ï¼Œåˆ™æ‰¾ä¸ç‚¹è·ç¦»æœ€è¿‘çš„çº¿
 		if (!_nearWhichLine(destMapPt, destFloorNo, lineIDForDestPt, nearestPtForDestPt, segmentNoForDestPt, distForDestPt))
 		{
-			cout << "ÖÕµã²»¿¿½üÈÎºÎÏß" << endl;
+			cout << "ç»ˆç‚¹ä¸é è¿‘ä»»ä½•çº¿" << endl;
 			return false;
 		}
 		break;
 	case 1:
-		//½«ÖÕµãÓëËùÔÚÇøÓòµÄ³öÈë¿ÚÁ½Á½ÏàÁ¬£¬²¢½«ĞÎ³ÉµÄĞÂµÄÏßÂ·²¢ÈëÂ·ÍøÖĞ£¨×¢Òâ±¸·İ£¬ÒÔ±ãºóĞø²éÕÒ»¹Ô­Ô­Ê¼Â·Íø£©
+		//å°†ç»ˆç‚¹ä¸æ‰€åœ¨åŒºåŸŸçš„å‡ºå…¥å£ä¸¤ä¸¤ç›¸è¿ï¼Œå¹¶å°†å½¢æˆçš„æ–°çš„çº¿è·¯å¹¶å…¥è·¯ç½‘ä¸­ï¼ˆæ³¨æ„å¤‡ä»½ï¼Œä»¥ä¾¿åç»­æŸ¥æ‰¾è¿˜åŸåŸå§‹è·¯ç½‘ï¼‰
 		destNodeID = _addAreaPointIntoTopo(destMapPt, areaIDForDestPt);
 		break;
 	}
 
-	//ÆğµãºÍÖÕµãÎ»ÓÚÍ¬Ò»Ïß×´Â·ÍøÉÏ
+	//èµ·ç‚¹å’Œç»ˆç‚¹ä½äºåŒä¸€çº¿çŠ¶è·¯ç½‘ä¸Š
 	if (0 == result1 && 0 == result2 && lineIDForStartPt == lineIDForDestPt)
 	{
 		pLine pTargetLine = m_lines[lineIDForStartPt];
@@ -1177,7 +1179,7 @@ bool TopoMap::searchPath(const CVector2& startMapPt, const float startFloorNo, c
 		return _constructPathOnSameLine(pTargetLine, segmentNoForStartPt, segmentNoForDestPt, ptsInfo);
 	}
 
-	//½«ÕÒµ½µÄÏßÒ»·ÖÎª¶ş£¬²¢¼ÓÈëÂ·ÍøÖĞ(×¢ÒâÔ­À´µÄÏßĞèÒª±¸·İ£¬ÒÔ±ãÏÂ´Î²éÕÒÊ±»¹Ô­»ØÔ­Ê¼Â·Íø)
+	//å°†æ‰¾åˆ°çš„çº¿ä¸€åˆ†ä¸ºäºŒï¼Œå¹¶åŠ å…¥è·¯ç½‘ä¸­(æ³¨æ„åŸæ¥çš„çº¿éœ€è¦å¤‡ä»½ï¼Œä»¥ä¾¿ä¸‹æ¬¡æŸ¥æ‰¾æ—¶è¿˜åŸå›åŸå§‹è·¯ç½‘)
 	if (0 == result1)
 	{
 		CVector3 startPtV3(startMapPt.x, startMapPt.y, nearestPtForStartPt.z);
@@ -1194,7 +1196,7 @@ bool TopoMap::searchPath(const CVector2& startMapPt, const float startFloorNo, c
 }
 
 
-//ÍË³ö²¢ÊÍ·Å×ÊÔ´
+//é€€å‡ºå¹¶é‡Šæ”¾èµ„æº
 void TopoMap::exitAndRelease()
 {
 	map<ID, pNode>::iterator iterNode;
@@ -1229,7 +1231,7 @@ void TopoMap::exitAndRelease()
 
 #define MAXBUFSIZE 10000000
 static char buf[MAXBUFSIZE];
-//»ñÈ¡Â·¾¶²éÕÒ½á¹û£¬ÒÔ×Ö·û´®ĞÎÊ½·µ»Ø
+//è·å–è·¯å¾„æŸ¥æ‰¾ç»“æœï¼Œä»¥å­—ç¬¦ä¸²å½¢å¼è¿”å›
 const char* TopoMap::getPathPointResult()
 {
 	stringstream ss;
@@ -1250,7 +1252,7 @@ const char* TopoMap::getPathPointResult()
 }
 
 
-//»ñÈ¡Â·¾¶²éÕÒ½á¹û,½á¹û½«ÒÔ×Ö·û´®ĞÎÊ½¸³Öµ¸ø´«ÈëµÄ²ÎÊı
+//è·å–è·¯å¾„æŸ¥æ‰¾ç»“æœ,ç»“æœå°†ä»¥å­—ç¬¦ä¸²å½¢å¼èµ‹å€¼ç»™ä¼ å…¥çš„å‚æ•°
 bool TopoMap::getPathPointResultEx(char* result)
 {
 	stringstream ss;
@@ -1265,7 +1267,7 @@ bool TopoMap::getPathPointResultEx(char* result)
 	return true;
 }
 
-//»ñÈ¡µã×ø±ê´®½á¹ûµÄ×Ö½Ú´óĞ¡
+//è·å–ç‚¹åæ ‡ä¸²ç»“æœçš„å­—èŠ‚å¤§å°
 int TopoMap::getByteSizeOfPathPointResult()
 {
 	stringstream ss;
